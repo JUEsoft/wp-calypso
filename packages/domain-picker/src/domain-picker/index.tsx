@@ -71,7 +71,6 @@ const DomainPicker: FunctionComponent< Props > = ( {
 	onDomainSelect,
 	quantity = PAID_DOMAINS_TO_SHOW,
 	quantityExpanded = PAID_DOMAINS_TO_SHOW_EXPANDED,
-	currentDomain,
 	analyticsFlowId,
 	analyticsUiAlgo,
 	domainSuggestionVendor,
@@ -200,7 +199,6 @@ const DomainPicker: FunctionComponent< Props > = ( {
 								<SuggestionItem
 									suggestion={ freeSuggestions[ 0 ] }
 									railcarId={ baseRailcarId ? `${ baseRailcarId }0` : undefined }
-									isSelected={ currentDomain?.domain_name === freeSuggestions[ 0 ].domain_name }
 									onRender={ () =>
 										handleItemRender( freeSuggestions[ 0 ], `${ baseRailcarId }0`, 0 )
 									}
@@ -218,7 +216,6 @@ const DomainPicker: FunctionComponent< Props > = ( {
 										key={ suggestion.domain_name }
 										suggestion={ suggestion }
 										railcarId={ baseRailcarId ? `${ baseRailcarId }${ i + 1 }` : undefined }
-										isSelected={ currentDomain?.domain_name === suggestion.domain_name }
 										isRecommended={ isRecommended( suggestion ) }
 										onRender={ () =>
 											handleItemRender( suggestion, `${ baseRailcarId }${ i + 1 }`, i + 1 )
