@@ -168,7 +168,7 @@ export default {
 		countryCodeTargets: [ 'US' ],
 	},
 	passwordlessAfterPlans: {
-		datestamp: '20200608',
+		datestamp: '20200618',
 		variations: {
 			variantPasswordless: 50,
 			control: 50,
