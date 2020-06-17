@@ -226,7 +226,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					{ product && (
 						<Notice
 							text={ translate(
-								'Updating the price will not affect existing recurring subscribers, who will pay what they were originally charged. Existing subscribers will pay the price they were originally charged when they renew'
+								'Updating the price will not affect existing subscribers, who will pay what they were originally charged on renewal.'
 							) }
 							showDismiss={ false }
 						/>
@@ -260,8 +260,8 @@ const RecurringPaymentsPlanAddEditModal = ( {
 						{ translate( 'Select renewal frequency' ) }
 					</FormLabel>
 					<FormSelect id="renewal_schedule" value={ editedSchedule } onChange={ onSelectSchedule }>
-						<option value="1 month">{ translate( 'Renew Monthly' ) }</option>
-						<option value="1 year">{ translate( 'Renew Yearly' ) }</option>
+						<option value="1 month">{ translate( 'Renew monthly' ) }</option>
+						<option value="1 year">{ translate( 'Renew yearly' ) }</option>
 						<option value="one-time">{ translate( 'One time sale' ) }</option>
 					</FormSelect>
 				</FormFieldset>
@@ -325,7 +325,7 @@ const RecurringPaymentsPlanAddEditModal = ( {
 					</h6>
 					<p>
 						{ translate(
-							'Add a custom message to the confirmation email that is sent out after the purchase. For example, you can thank your customers.'
+							'Add a custom message to the confirmation email that is sent after purchase. For example, you can thank your customers.'
 						) }
 					</p>
 					<CountedTextArea
