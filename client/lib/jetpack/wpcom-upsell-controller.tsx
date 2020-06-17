@@ -8,11 +8,9 @@ import React from 'react';
  */
 import { isEnabled } from 'config';
 import type { Context } from './types';
-import { isBusinessPlan } from 'lib/plans';
-import { isEligibleForAutomatedTransfer } from 'state/automated-transfer/selectors';
-import isSiteAutomatedTransfer from 'state/selectors/is-site-automated-transfer';
-import { getSitePlan, isJetpackSite } from 'state/sites/selectors';
+import { isJetpackSite } from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
+import isSiteOnAtomicPlan from 'state/selectors/is-site-on-atomic-plan';
 
 export default function upsellSwitch(
 	UpsellComponent: typeof React.Component,
@@ -23,27 +21,24 @@ export default function upsellSwitch(
 		const siteId = getSelectedSiteId( getState() );
 		const isJetpack = isJetpackSite( getState(), siteId );
 
+		// Note that isJetpack *includes* Atomic sites, so we don't need to explicitly check for that.
 		if ( isJetpack || isEnabled( 'jetpack-cloud' ) ) {
 			return next();
 		}
 
-		const currentPlan = getSitePlan( getState(), siteId );
-		const isBusiness = isBusinessPlan( currentPlan.product_slug );
-
 		// Show Business plan upsell if it isn't a Jetpack site and it doesn't have
-		// a Business plan
-		if ( ! isBusiness ) {
+		// a Business plan. Note this will include E-Comm.
+		const hasPlanForAT = siteId && isSiteOnAtomicPlan( getState(), siteId );
+		// eslint-disable-next-line
+		if ( ! hasPlanForAT && false ) {
 			context.primary = <UpsellComponent />;
+			return next();
 		}
 
-		const isAtomic = isSiteAutomatedTransfer( getState(), siteId );
-		const isEligibleForAT = isEligibleForAutomatedTransfer( getState(), siteId );
-		// Show the Automated Transfer for sites with a Business plan that are not
-		// Atomic sites. These sites must be eligible as well.
-		if ( isBusiness && ! isAtomic && isEligibleForAT ) {
-			const primaryProduct = context.path.includes( '/backup/' ) ? 'backup' : 'scan';
-			context.primary = <BusinessATComponent product={ primaryProduct } />;
-		}
+		// Show the Automated Transfer prompt for sites with a Business or E-Comm plan that have not
+		// gone through the transfer process yet.
+		const primaryProduct = context.path.includes( '/backup/' ) ? 'backup' : 'scan';
+		context.primary = <BusinessATComponent product={ primaryProduct } />;
 
 		next();
 	};
